@@ -8,7 +8,48 @@
     <script src="index.js" defer></script>
     <title>Sign-Up Today!</title>
 </head>
-<body>
-    
-</body>
+<body id="wrapper">
+    <div class="content">
+      <form novalidate>
+        <p class="form-header">Sign-up Form</p>
+        <p>
+          <label for="email">
+            <input type="email" id="email" name="email" required minlength="8" placeholder="Email Address">
+            <span class="error" aria-live="polite"></span>
+          </label>
+        </p>
+        <div class="mid-form">
+          <p>
+            <label for="country">
+              <input type="text" id="country" name="country" required placeholder="Country">
+              <span class="error" aria-live="polite"></span>
+            </label>
+          </p>
+          <p>
+            <label for="zip-code">
+              <input type="text" id="zip-code" name="zip-code"  minlength="5" maxlength="5" pattern="\d{5}" placeholder="Zip Code">
+              <span class="error" aria-live="polite"></span>
+            </label>
+          </p>
+        </div>
+        <p>
+          <label for="password">
+            <input type="password" id="password" name="password" required minlength="8" placeholder="Password">
+            <span class="error" aria-live="polite"></span>
+          </label>
+        </p>
+        <p>
+          <label for="password-conf">
+            <input type="password" id="password-conf" name="password-conf" required  placeholder="Confirm Password">
+            <span class="error" aria-live="polite"></span>
+          </label>
+        </p>
+        <div class="terms-div">
+          <input type="checkbox" name="terms-check" id="terms-check">
+          <p>By signing up, I agree to the <a href="#">Terms of Use</a> and acknowledge that I have read the <a href="#">Privacy Policy</a></p>
+        </div>
+        <button>Submit</button>
+      </form>
+    </div>
+  </body>
 </html>
