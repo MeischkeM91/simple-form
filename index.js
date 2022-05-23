@@ -8,16 +8,15 @@ let emailValid, countryValid, zipValid, passwordValid, passwordConfValid = false
 // set zipValid to true by default since it is not required;
 zipValid=true;
 
+// This adds an eventlistener to update as form is filled out
 inputArr.forEach(el => {
   el.addEventListener('input', (event)=>{
     selectTest(el);
   });
 });
 
-
-
+// Switch will determine which error to throw
 function selectTest(el) {
-  // Switch will determine which error to throw
   switch (el.id){
     case 'email':
       testEmailInput(el);
@@ -37,8 +36,8 @@ function selectTest(el) {
     default:
       console.log('default');
       break;
-  }
-}
+  };
+};
 
 // This functions validates the Email field and displays customized error detailing requirements.
 function testEmailInput(el){
@@ -174,41 +173,63 @@ function testPasswordConfirmationInput(el){
   }
 };
 
+// This function display a prompt telling the user to agree to Terms
 const promptForAgreement = () =>{
     const termsPromptBg = document.createElement('div');
     termsPromptBg.classList.add('terms-prompt-bg');
     const termsPrompt = document.createElement('div');
     termsPrompt.classList.add('terms-prompt');
     termsPrompt.innerText = "To proceed, please agree to our Terms of Use and Privacy Policy."
-
     // This eventListener will close prompt if clicked outside of container
     termsPromptBg.addEventListener('click', (e)=>{
         if (!termsPrompt.contains(e.target)){
             termsPrompt.parentElement.remove();
         }
     });
-    
+    // Append the prompt
     wrapper.appendChild(termsPromptBg);
     termsPromptBg.appendChild(termsPrompt);
 };
 
+// This function displays whether the submission was successful or not
+const displaySubmission = (bool) =>{
+    const subPromptBg = document.createElement('div');
+    subPromptBg.classList.add('sub-prompt-bg');
+    const subPrompt = document.createElement('div');
+    subPrompt.classList.add('sub-prompt');
+    // This eventListener will close prompt if clicked outside of container
+    subPromptBg.addEventListener('click', (e)=>{
+        if (!subPrompt.contains(e.target)){
+            subPrompt.parentElement.remove();
+        }
+    });
+    // display correct prompt based on validity of form
+    if(bool==false){
+        subPrompt.innerText = "Submission failed, please fill the form out accordingly."
+    } else {
+        subPrompt.innerText = "Submission successful!Thank you for signing up."
+    }    
+    wrapper.appendChild(subPromptBg);
+    subPromptBg.appendChild(subPrompt);
+};
+
+// This checks if each field is valid
 function checkFormValidity(){
     const termsCheckbox = document.getElementById('terms-check');
     let formValidity = false;
     if (emailValid==true && countryValid==true && zipValid==true && passwordValid==true && passwordConfValid==true){
         if(termsCheckbox.checked == true){
             formValidity = true;    
-            return formValidity;
+            displaySubmission(formValidity);
         }
         else{
             promptForAgreement(); 
-            return formValidity;
         }
     }
-    else {return formValidity};
+    else {displaySubmission(formValidity)};
 };
 
-
+// Submit button functionality
 submitBtn.addEventListener('click', ()=>{
-    console.log(checkFormValidity());
+    checkFormValidity();
 });
