@@ -1,8 +1,12 @@
+// Get the page to append terms prompt
+const wrapper = document.querySelector('#wrapper');
 // Get the form, email, input box, error span element
 const form  = document.getElementsByTagName('form')[0];
 const inputArr = document.querySelectorAll('input');
 const submitBtn = document.getElementById('submitBtn');
 let emailValid, countryValid, zipValid, passwordValid, passwordConfValid = false;
+// set zipValid to true by default since it is not required;
+zipValid=true;
 
 inputArr.forEach(el => {
   el.addEventListener('input', (event)=>{
@@ -170,14 +174,40 @@ function testPasswordConfirmationInput(el){
   }
 };
 
+const promptForAgreement = () =>{
+    const termsPromptBg = document.createElement('div');
+    termsPromptBg.classList.add('terms-prompt-bg');
+    const termsPrompt = document.createElement('div');
+    termsPrompt.classList.add('terms-prompt');
+    termsPrompt.innerText = "To proceed, please agree to our Terms of Use and Privacy Policy."
+
+    // This eventListener will close prompt if clicked outside of container
+    termsPromptBg.addEventListener('click', (e)=>{
+        if (!termsPrompt.contains(e.target)){
+            termsPrompt.parentElement.remove();
+        }
+    });
+    
+    wrapper.appendChild(termsPromptBg);
+    termsPromptBg.appendChild(termsPrompt);
+};
+
 function checkFormValidity(){
+    const termsCheckbox = document.getElementById('terms-check');
     let formValidity = false;
     if (emailValid==true && countryValid==true && zipValid==true && passwordValid==true && passwordConfValid==true){
-        formValidity = true;    
-        return formValidity;
+        if(termsCheckbox.checked == true){
+            formValidity = true;    
+            return formValidity;
+        }
+        else{
+            promptForAgreement(); 
+            return formValidity;
+        }
     }
     else {return formValidity};
 };
+
 
 submitBtn.addEventListener('click', ()=>{
     console.log(checkFormValidity());
