@@ -1,8 +1,8 @@
 // Get the form, email, input box, error span element
 const form  = document.getElementsByTagName('form')[0];
 const inputArr = document.querySelectorAll('input');
-
-
+const submitBtn = document.getElementById('submitBtn');
+let emailValid, countryValid, zipValid, passwordValid, passwordConfValid = false;
 
 inputArr.forEach(el => {
   el.addEventListener('input', (event)=>{
@@ -11,17 +11,6 @@ inputArr.forEach(el => {
 });
 
 
-
-form.addEventListener('submit', function (event) {
-  // if the email field is valid, we let the form submit
-
-  if(!email.validity.valid) {
-    // If it isn't, we display an appropriate error message
-    showError();
-    // Then we prevent the form from being sent by canceling the event
-    event.preventDefault();
-  }
-});
 
 function selectTest(el) {
   // Switch will determine which error to throw
@@ -55,21 +44,24 @@ function testEmailInput(el){
     const errorToClear = el.nextElementSibling;
     errorToClear.textContent = ''; 
     errorToClear.className = 'error';
-    el.style.backgroundColor='lightgreen';
+    // Set email validity to true
+    emailValid = true;
   }else {
-      if(el.validity.valueMissing) {
-    // If the field is empty, display the following error message.
-    emailError.textContent = 'You need to enter an e-mail address.';
-  } else if(el.validity.typeMismatch) {
-    // If the field doesn't contain an email address, display the following error message.
-    emailError.textContent = 'Entered value needs to be an e-mail address.';
-  } else if(el.validity.tooShort) {
-    // If the data is too short, display the following error message.
-    emailError.textContent = `Email should be at least ${ el.minLength } characters; you entered ${ el.value.length }.`;
-  }
-  // Set the styling appropriately
-  emailError.className = 'error active';
-  };
+    if(el.validity.valueMissing) {
+        // If the field is empty, display the following error message.
+        emailError.textContent = 'You need to enter an e-mail address.';
+    } else if(el.validity.typeMismatch) {
+        // If the field doesn't contain an email address, display the following error message.
+        emailError.textContent = 'Entered value needs to be an e-mail address.';
+    } else if(el.validity.tooShort) {
+        // If the data is too short, display the following error message.
+        emailError.textContent = `Email should be at least ${ el.minLength } characters; you entered ${ el.value.length }.`;
+    }
+    //Set email validity variable to false
+    emailValid = false;
+    // Set the styling appropriately
+    emailError.className = 'error active';
+    };
 };
 
 // This functions validates the Country field and displays customized error detailing requirements.
@@ -83,10 +75,13 @@ function testCountryInput(el){
     const errorToClear = el.nextElementSibling;
     errorToClear.textContent = ''; 
     errorToClear.className = 'error'; 
-    el.style.backgroundColor='lightgreen';
+    // Set country validity to true
+    countryValid = true;
   }else {
     el.classList.add('invalid');
     countryError.textContent = "Please use only alphabetic characters."
+    //Set country validity variable to false
+    countryValid = false;
     // Set the styling appropriately
     countryError.className = 'error active';
   };
@@ -104,10 +99,13 @@ function testZipCodeInput(el){
     const errorToClear = el.nextElementSibling;
     errorToClear.textContent = ''; 
     errorToClear.className = 'error'; 
-    el.style.backgroundColor='lightgreen';
+    // Set zip validity to true
+    zipValid = true;
   }else {
     el.classList.add('invalid');
     zipError.textContent = "Please enter a 5-digit zip code."
+    //Set zip validity variable to false
+    zipValid = false;
     // Set the styling appropriately
     zipError.className = 'error active';
   };
@@ -115,52 +113,72 @@ function testZipCodeInput(el){
 
 // This functions validates the Password field and displays customized error detailing requirements.
 function testPasswordInput(el){
-  const passwordError = document.querySelector('#password + span.error');
-  // This is the regex we will test the input against
-  let passwordRegEx = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g);
-  // Checking password reqs and length 
-  if(passwordRegEx.test(el.value) && !el.validity.tooShort){
-          // If the field is valid, clear the error
-          el.classList.remove('invalid');
-          const errorToClear = el.nextElementSibling;
-          errorToClear.textContent = ''; 
-          errorToClear.className = 'error'; 
+    const passwordError = document.querySelector('#password + span.error');
+    // This is the regex we will test the input against
+    let passwordRegEx = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g);
+    // Checking password reqs and length 
+    if(passwordRegEx.test(el.value) && !el.validity.tooShort){
+        // If the field is valid, clear the error
+        el.classList.remove('invalid');
+        const errorToClear = el.nextElementSibling;
+        errorToClear.textContent = ''; 
+        errorToClear.className = 'error'; 
+        // Set password validity to true
+        passwordValid = true;
     }
     // Check the length
     else if(el.validity.tooShort){
-      el.classList.add('invalid');
-      passwordError.textContent = "Your password must be at least 8 characters."
-      // Set the styling appropriately
-      passwordError.className = 'error active';
+        el.classList.add('invalid');
+        passwordError.textContent = "Your password must be at least 8 characters."
+        //Set password validity to false
+        passwordValid = false;
+        // Set the styling appropriately
+        passwordError.className = 'error active';
     } 
     // Next we'll check the pattern
     else if(!passwordRegEx.test(el.value)){
-      el.classList.add('invalid');
-      passwordError.textContent = "Your password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
-      // Set the styling appropriately
-      passwordError.className = 'error active';
+        el.classList.add('invalid');
+        passwordError.textContent = "Your password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
+        //Set password validity to false
+        passwordValid = false;
+        // Set the styling appropriately
+        passwordError.className = 'error active';
     };
 };
 
 // This functions validates the Password Confirmation field and displays customized error detailing requirements.
 function testPasswordConfirmationInput(el){
-  const passwordConfirmationError = document.querySelector('#password-conf + span.error');
-  const passwordInputField = document.querySelector('#password');
-  // Test that each input matches
-  if(el.value == passwordInputField.value){
-    // If the field is valid, clear the error
-    el.classList.remove('invalid');
-    const errorToClear = el.nextElementSibling;
-    errorToClear.textContent = ''; 
-    errorToClear.className = 'error'; 
-    // Color the fields green
-    passwordInputField.style.backgroundColor='lightgreen';
-    el.style.backgroundColor='lightgreen';
-  }
-  else{
-    el.classList.add('invalid');
-    passwordConfirmationError.textContent = "Your passwords must match."
-    // Set the styling appropriately
-    passwordConfirmationError.className = 'error active';
+    const passwordConfirmationError = document.querySelector('#password-conf + span.error');
+    const passwordInputField = document.querySelector('#password');
+    // Test that each input matches
+    if(el.value == passwordInputField.value){
+        // If the field is valid, clear the error
+        el.classList.remove('invalid');
+        const errorToClear = el.nextElementSibling;
+        errorToClear.textContent = ''; 
+        errorToClear.className = 'error'; 
+        // Set password confirmation validity to true
+        passwordConfValid = true;
+    }
+    else{
+        el.classList.add('invalid');
+        passwordConfirmationError.textContent = "Your passwords must match.";
+        //Set password confirmation validity to false
+        passwordConfValid = false;
+        // Set the styling appropriately
+        passwordConfirmationError.className = 'error active';
   }
 };
+
+function checkFormValidity(){
+    let formValidity = false;
+    if (emailValid==true && countryValid==true && zipValid==true && passwordValid==true && passwordConfValid==true){
+        formValidity = true;    
+        return formValidity;
+    }
+    else {return formValidity};
+};
+
+submitBtn.addEventListener('click', ()=>{
+    console.log(checkFormValidity());
+});
