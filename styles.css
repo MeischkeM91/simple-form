@@ -2,58 +2,58 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  html{background-color: skyblue;}
-  body {
+}
+html{background-color: skyblue;}
+body {
     font: 1em sans-serif;
     padding: 0;
     margin : 0;
-  }
-  .content{
+}
+.content{
     width: 45vw;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 1px 1px 3px black;
     padding: 10px 30px;
     margin: 10px auto;
-  }
-  form, form > p, label{
+}
+form, form > p, label{
     display: flex;
     flex-direction: column;
     align-items: stretch;
-  }
-  form{
+}
+form{
     gap: 15px;
-  }
-  form > * {
+}
+form > * {
     width: 100%;
-  }
-  .form-header{
+}
+.form-header{
     font-size: 1.8rem;
     font-weight: 600;
     text-align: center;
     margin: 5px 0px 30px;
-  }
-  #email, #country, #zip-code, #password, #password-conf{
+}
+#email, #country, #zip-code, #password, #password-conf{
     font-size: 1.3rem;
     border: 1px solid gray;
     border-radius: 10px;
     padding: 5px 10px;
-  }
-  .mid-form{
+}
+.mid-form{
     display: flex;
     justify-content: center;
     gap: 10px;
-  }
-  .mid-form p{
+}
+.mid-form p{
     width: 49%;
-  }
-  .terms-div{
+}
+.terms-div{
     display: flex;
     justify-content: start;
     gap: 15px;
-  }
-  form button{
+}
+form button{
     width: auto;
     font-size: 1.5rem;
     color: white;
@@ -62,26 +62,45 @@
     border-radius: 50px;
     padding: 8px 0px;
     margin: 20px 25% 10px;
-  }
-  input{
+}
+input{
     z-index: 1;
-  }
-  /* This is our style for the invalid fields */
-  input:invalid, input.invalid{
+}
+/* This is our style for the invalid fields */
+input:invalid, input.invalid{
     border: 2px solid #900;
     background-color: #FDD;
-  }
-  input:focus:invalid {
+}
+input:focus:invalid {
     outline: none;
-  }
-  
-  /* This is the style of our error messages */
-  .error {
+}
+/* This is the style of our error messages */
+.error {
     width  : 100%;
     text-align: center;
     font-size: 90%;
     color: #900;
-  }
-  .error.active{
+}
+.error.active{
     padding: 5px 0px;
-  }
+}
+
+/* Terms of use prompt styling */
+.terms-prompt-bg{
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.terms-prompt{
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 1px 1px 3px black;
+}
